@@ -29,4 +29,14 @@ public class QuoteRestControllerIT {
                     assertNotNull(quote.getAuthor());
                 });
     }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToAddLikeToQuote() {
+        webTestClient.patch()
+                .uri("/like/10")
+                .exchange()
+                .expectStatus().is4xxClientError()
+                .expectBody(String.class)
+                .isEqualTo("Id not found");
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -48,5 +49,30 @@ public class QuoteServiceTest {
         // then
         assertEquals("Quote", result.getQuote());
         assertEquals("Author", result.getAuthor());
+    }
+
+    @Test
+    void shouldAddLikeToQuote() {
+        // given
+        quoteService.getQuotes().add(Quote.builder().quote("Quote").author("Author").likes(2).build());
+
+        // when
+        Quote quote = quoteService.addLikeToQuote(0);
+
+        // then
+        assertEquals(3, quote.getLikes());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToAddLikeToQuote() {
+        // given
+        String message = "Id not found";
+
+        // when
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
+                () -> quoteService.addLikeToQuote(10));
+
+        // then
+        assertEquals(message, illegalArgumentException.getMessage());
     }
 }
