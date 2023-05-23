@@ -1,0 +1,8 @@
+type Query {
+    fetchRandomQuote: Quote
+}
+
+type Quote {
+    quote: String
+    author: String
+}
