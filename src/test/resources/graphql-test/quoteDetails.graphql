@@ -1,0 +1,6 @@
+query quoteDetails {
+    fetchRandomQuote {
+        quote,
+        author
+    }
+}
